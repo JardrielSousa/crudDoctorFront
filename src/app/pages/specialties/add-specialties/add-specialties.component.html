@@ -1,0 +1,50 @@
+<div class="container">
+  <div>
+    <h1>Add Specialties</h1>
+  </div>
+  <form class="form" [formGroup]="specialtiesForm" (ngSubmit)="onSubmit()">
+
+    <label>
+      Name:
+      <input type="text" name="name" formControlName="name" required >
+      <div>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.name.errors && f.name.errors.required">Required field</mat-error>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.name.errors && f.name.errors.minlength">Field must have at least 4 characters</mat-error>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.name.errors && f.name.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
+      </div>
+    </label>
+    <label>
+      Description:
+      <input type="text" name="description" formControlName="description" required >
+      <div>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.description.errors && f.description.errors.required">Required field</mat-error>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.description.errors && f.description.errors.minlength">Field must have at least 4 characters</mat-error>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.description.errors && f.description.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
+      </div>
+    </label>
+    <label>
+      active:
+              <mat-slide-toggle
+                  class="example-margin"
+                  [checked]="active"
+                  name="active" formControlName="active"
+                  required
+              >
+              </mat-slide-toggle>
+    </label>
+    <br>
+    <label>
+      Doctor:
+      <mat-form-field appearance="fill">
+        <mat-label>Doctor</mat-label>
+        <mat-select name="doctorId" formControlName="doctorId" required>
+          <mat-option *ngFor="let doctor of doctorList" [value]="doctor.id">{{doctor.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <mat-error *ngIf="(specialtiesForm.touched || specialtiesForm.dirty) && f.doctorId.errors && f.doctorId.errors.required">Required field</mat-error><br>
+      </div>
+    </label>
+    <button  mat-raised-button color="accent" type="submit">submit</button>
+    </form>
+    </div>

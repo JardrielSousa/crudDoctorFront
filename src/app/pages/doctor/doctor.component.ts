@@ -25,6 +25,6 @@ export class DoctorComponent implements OnInit {
     })
   }
 
-  displayedColumns: string[] = ['name', 'birthdate', 'active','specialties'];
+  displayedColumns: string[] = ['name', 'birthdate', 'active','specialties','action'];
 
 }

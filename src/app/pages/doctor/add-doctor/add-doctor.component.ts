@@ -22,9 +22,7 @@ export class AddDoctorComponent implements OnInit {
     .subscribe((resp:any)=>{
       this.specialtieslist = resp.content
     })
-
   }
-
 
   doctorForm = this.fb.group({
     name: [
@@ -39,20 +37,30 @@ export class AddDoctorComponent implements OnInit {
   });
 
   onSubmit(){
+    let doctorId;
     this.doctorForm.markAllAsTouched();
     console.log(this.doctorForm.value);
     if(this.doctorForm.invalid)
       return;
     this.doctorService.create(this.doctorForm.value).subscribe((resp:any)=>{
       this.doctorService.verMsg('doctor was created!!!')
+      this.insertSpecialties(resp.id);
       this.router.navigate(['/doctor']);
     });
-    this.doctorForm.controls['doctor'].setValue(this.doctorForm.value);
-    this.specialtiesService.create(this.doctorForm.value)
-    .subscribe((resp:any)=>{
-      console.log(resp);
+  }
 
-    })
+  private insertSpecialties(doctorId: undefined) {
+    for (const iterator of this.doctorForm.value.specialties) {
+      this.specialtiesService.create({
+        name: iterator.name,
+        description: iterator.description,
+        active: iterator.active,
+        doctorId: doctorId
+      })
+        .subscribe((resp: any) => {
+          console.log(resp);
+        });
+    }
   }
 
   get f() {

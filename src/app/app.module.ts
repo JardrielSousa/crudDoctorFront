@@ -20,6 +20,9 @@ import { AddDoctorComponent } from './pages/doctor/add-doctor/add-doctor.compone
 import { NavComponent } from './pages/nav/nav.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { EditDoctorComponent } from './pages/doctor/edit-doctor/edit-doctor.component';
+import { AddSpecialtiesComponent } from './pages/specialties/add-specialties/add-specialties.component';
+import { EditSpecialtiesComponent } from './pages/specialties/edit-specialties/edit-specialties.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { MatInputModule } from '@angular/material/input';
     SpecialtiesComponent,
     AddDoctorComponent,
     NavComponent,
+    EditDoctorComponent,
+    AddSpecialtiesComponent,
+    EditSpecialtiesComponent,
 
   ],
   imports: [

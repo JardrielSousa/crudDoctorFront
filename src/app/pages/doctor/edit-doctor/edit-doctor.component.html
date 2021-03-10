@@ -1,12 +1,12 @@
 <div class="container">
   <div>
-    <h1>Add Doctor</h1>
+    <h1>{{isDelete ? 'Delete Doctor' :' Edit Doctor'}}</h1>
   </div>
-  <form class="form" [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+  <form class="form" [formGroup]="doctorForm" (ngSubmit)="isDelete ? ondelete() : onSubmit()">
 
     <label>
       Name:
-      <input type="text" name="name" formControlName="name" required >
+      <input type="text" name="name" formControlName="name" required [value]="doctor.name">
       <div>
         <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.name.errors && f.name.errors.required">Required field</mat-error>
         <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.name.errors && f.name.errors.minlength">Field must have at least 4 characters</mat-error>
@@ -16,7 +16,7 @@
     <label>
       birthday:
       <div>
-          <input matInput [matDatepicker]="picker" name="birthDate" formControlName="birthDate" (click)="picker.open()">
+          <input matInput [matDatepicker]="picker" name="birthdate" formControlName="birthDate" [value]="doctor.birthDate" (click)="picker.open()">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
       </div>
@@ -28,7 +28,7 @@
       active:
               <mat-slide-toggle
                   class="example-margin"
-                  [checked]="active"
+                  [checked]="doctor.active"
                   name="active" formControlName="active"
                   required
               >
@@ -38,15 +38,17 @@
     <label>
       Specialties:
       <mat-form-field appearance="fill">
-        <mat-label>Specialties</mat-label>
+        <div *ngFor="let item of doctor.specialties">
+          <mat-label>{{isDelete ? item : 'specialties'}}</mat-label>
+        </div>
         <mat-select name="specialties" formControlName="specialties"  multiple required>
-          <mat-option *ngFor="let topping of specialtieslist" [value]="topping">{{topping.name}}</mat-option>
+          <mat-option *ngFor="let s of specialtieslist" [value]="s">{{s.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
         <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.specialties.errors && f.specialties.errors.required">Required field</mat-error><br>
       </div>
     </label>
-    <button  mat-raised-button color="accent" type="submit">submit</button>
+    <button  mat-raised-button [color]="isDelete ? 'warn' : 'accent'" type="submit">{{ isDelete ? 'Delete' : 'edit' }} doctor</button>
     </form>
     </div>
