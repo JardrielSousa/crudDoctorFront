@@ -1,0 +1,53 @@
+<div class="container">
+  <div>
+    <h1>Loan Consult</h1>
+  </div>
+  <form class="form" [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+
+    <label>
+      Name:
+      <input type="text" name="name" formControlName="name" required >
+      <div>
+        <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.name.errors && f.name.errors.required">Required field</mat-error>
+        <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.name.errors && f.name.errors.minlength">Field must have at least 4 characters</mat-error>
+        <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.name.errors && f.name.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
+      </div>
+    </label>
+    <label>
+      birthday:
+      <div>
+          <input matInput [matDatepicker]="picker" name="birthdate" formControlName="birthDate" (click)="picker.open()">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+      </div>
+      <div>
+        <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.birthDate.errors && f.birthDate.errors.required">Required field</mat-error><br>
+      </div>
+    </label>
+    <label>
+      active:
+              <mat-slide-toggle
+                  class="example-margin"
+                  [checked]="active"
+                  name="active" formControlName="active"
+                  required
+              >
+              </mat-slide-toggle>
+    </label>
+    <br>
+    <label>
+      specialties:
+      <input type="text" name="specialties" formControlName="specialties" required>
+      <mat-form-field appearance="fill">
+        <mat-label>Toppings</mat-label>
+        <mat-select name="specialties" formControlName="specialties"  multiple>
+          <mat-option *ngFor="let topping of specialtieslist" [value]="topping">{{topping.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <mat-error *ngIf="(doctorForm.touched || doctorForm.dirty) && f.specialties.errors && f.specialties.errors.required">Required field</mat-error><br>
+      </div>
+    </label>
+    <button  mat-raised-button color="accent" type="submit">submit</button>
+    </form>
+    </div>

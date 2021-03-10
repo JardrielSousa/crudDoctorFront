@@ -1,0 +1,32 @@
+<div class="container">
+  <div>
+    <h1>Doctor Consult</h1>
+  </div>
+  <table mat-table [dataSource]="doctors" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthdate">
+      <th mat-header-cell *matHeaderCellDef> birthdate </th>
+      <td mat-cell *matCellDef="let element"> {{element.birthDate | date}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef> active </th>
+      <td mat-cell *matCellDef="let element"> {{element.active}} </td>
+    </ng-container>
+
+  <ng-container matColumnDef="specialties">
+    <th mat-header-cell *matHeaderCellDef> specialties </th>
+    <td mat-cell *matCellDef="let element"> {{element.specialties}} </td>
+  </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<button mat-raised-button color="accent" routerLink="/addDoctor">Add Doctor</button>
+
