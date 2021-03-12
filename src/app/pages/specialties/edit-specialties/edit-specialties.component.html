@@ -2,13 +2,12 @@
   <div>
     <h1>{{ isDelete ? 'Delete Specialties': 'Edit Specialties'}}</h1>
   </div>
-  <form class="form" [formGroup]="specialtiesForm" (ngSubmit)="isDelete ? ondelete() : onSubmit()">
+  <form class="form" [formGroup]="specialtiesForm" (ngSubmit)="isDelete ? onDelete() : onSubmit()">
 
     <label>
       Name:
       <input type="text" name="name" formControlName="name" [value]="specialties?.name" required >
       <div>
-        <mat-error *ngIf="(specialtiesForm.dirty) && f.name.errors && f.name.errors.required">Required field</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.name.errors && f.name.errors.minlength">Field must have at least 4 characters</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.name.errors && f.name.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
       </div>
@@ -17,7 +16,6 @@
       Description:
       <input type="text" name="description"  formControlName="description" [value]="specialties?.description" required >
       <div>
-        <mat-error *ngIf="(specialtiesForm.dirty) && f.description.errors && f.description.errors.required">Required field</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.description.errors && f.description.errors.minlength">Field must have at least 4 characters</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.description.errors && f.description.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
       </div>
@@ -38,12 +36,15 @@
       Doctor:
       <mat-form-field appearance="fill">
         <mat-label>{{specialties?.doctor.name}}</mat-label>
-        <mat-select name="doctorId" formControlName="doctorId" [value]="specialties?.doctor" required>
-          <mat-option *ngFor="let doctor of doctorList" [value]="specialties">{{doctor.name}}</mat-option>
+        <mat-select name="doctorId" formControlName="doctorId" [value]="specialties?.doctor.id" >
+          <mat-option *ngFor="let doctor of doctorList" [value]="specialties?.doctor.id">{{doctor.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.doctorId.errors && f.doctorId.errors.required">Required field</mat-error><br>
+      </div>
+      <div>
+        <mat-error *ngIf="nothingWasChanged">Nothing was changed</mat-error><br>
       </div>
     </label>
     <button  mat-raised-button [color]="isDelete ? 'warn' : 'accent'" type="submit">{{ isDelete ? 'Delete' : 'edit' }} Specialties</button>    </form>

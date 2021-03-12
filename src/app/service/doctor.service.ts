@@ -36,6 +36,10 @@ export class DoctorService {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
 
+  getDoctorBySpecialties(name:any){
+    return this.http.get<any>(`${this.baseUrl}/specialties/${name}`);
+  }
+
   readAll(){
     return this.http.get<any>(this.baseUrl);
   }

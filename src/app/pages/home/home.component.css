@@ -1,0 +1,27 @@
+.header{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 400;
+  font-weight: 900;
+  margin: 30px;
+}
+
+table {
+  width: 99%;
+  margin: 10px;
+}
+.edit {
+  color :black;
+  margin-right: 10px;
+}
+
+.delete {
+  color:red
+}
+
+button{
+  margin: 10px;
+}
+

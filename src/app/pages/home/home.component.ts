@@ -1,3 +1,5 @@
+import { SpecialtiesService } from './../../service/specialties.service';
+import { DoctorService } from './../../service/doctor.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -7,10 +9,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  constructor(private router: Router) { }
+  doctors:any = [];
+  selected = '1';
+  specialties:any
+  constructor(private router: Router,
+    private doctorService:DoctorService,
+    private specialtiesService:SpecialtiesService) { }
 
   ngOnInit(): void {
+    this.specialtiesService.readAll()
+    .subscribe((resp:any)=>{
+      this.specialties = resp.content
+    });
+    this.doctorService.getDoctorBySpecialties(this.selected).
+    subscribe((resp:any)=>{
+      this.doctors = resp
+    })
   }
+  displayedColumns: string[] = ['name', 'birthdate', 'active','action'];
 
+  onSelected(){
+    this.doctorService.getDoctorBySpecialties(this.selected).
+    subscribe((resp:any)=>{
+      this.doctors = resp
+    })
+  }
 }

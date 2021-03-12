@@ -14,7 +14,8 @@ export class EditSpecialtiesComponent implements OnInit {
   doctorList:any;
   id:any;
   active = true;
-  specialties:any
+  specialties:any;
+  nothingWasChanged:boolean=false;
   constructor( private fb: FormBuilder,
     private router:Router,
     private doctorService:DoctorService,
@@ -37,7 +38,6 @@ export class EditSpecialtiesComponent implements OnInit {
     this.specialtiesService.readById(id)
     .subscribe((resp:any)=>{
       this.specialties = resp;
-      console.log(this.specialties);
     });
     this.doctorService.readAll()
     .subscribe((resp:any)=>{
@@ -46,6 +46,7 @@ export class EditSpecialtiesComponent implements OnInit {
   }
 
   specialtiesForm = this.fb.group({
+    id:[''],
     name: [
       '',
       [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
@@ -54,24 +55,29 @@ export class EditSpecialtiesComponent implements OnInit {
       '',
       [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
     ],
-    active: ['', [Validators.required]],
+    active: ['',],
     doctorId: [
-      '',[Validators.required]
+      '',
     ],
   });
 
   onSubmit(){
     this.specialtiesForm.markAllAsTouched();
-    console.log(this.specialtiesForm.value);
+    this.specialtiesForm.controls['id'].setValue(this.id);
+    this.specialtiesForm.controls['name'].setValue(this.specialties.name);
+    this.specialtiesForm.controls['description'].setValue(this.specialties.description);
+    this.specialtiesForm.controls['active'].setValue(this.specialties.active);
+    this.specialtiesForm.controls['doctorId'].setValue(this.specialties?.doctor.id);
+
     if(this.specialtiesForm.invalid)
       return;
-    this.specialtiesService.create(this.specialtiesForm.value).subscribe((resp:any)=>{
+    this.specialtiesService.update(this.id , this.specialtiesForm.value).subscribe((resp:any)=>{
       this.doctorService.verMsg('specialties was created!!!')
       this.router.navigate(['/specialties']);
     });
   }
 
-  ondelete(){
+  onDelete(){
     this.specialtiesService.delete(this.id)
     .subscribe((resp:any)=>{
       this.router.navigate(['specialties'])

@@ -11,13 +11,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class AddDoctorComponent implements OnInit {
   specialtieslist:any
-  active = true;
+  active : boolean = true;
   constructor( private fb: FormBuilder,
     private router:Router,
     private doctorService:DoctorService,
     private specialtiesService:SpecialtiesService) { }
 
   ngOnInit(): void {
+    this.active = true;
     this.specialtiesService.readAll()
     .subscribe((resp:any)=>{
       this.specialtieslist = resp.content
@@ -29,8 +30,8 @@ export class AddDoctorComponent implements OnInit {
       '',
       [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
     ],
-    birthDate: ['', [Validators.required]],
-    active: ['', [Validators.required]],
+    birthDate: [new Date(), [Validators.required]],
+    active: [true, [Validators.required]],
     specialties: [
       '',
     ],

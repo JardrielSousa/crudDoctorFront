@@ -1,3 +1,4 @@
+import { SpecialtiesService } from './../../service/specialties.service';
 import { DoctorService } from './../../service/doctor.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -14,17 +15,17 @@ export class DoctorComponent implements OnInit {
   form:boolean = false;
 
   constructor(
-    private doctorService:DoctorService) { }
+    private doctorService:DoctorService,
+    private specialtiesService:SpecialtiesService) { }
 
   ngOnInit(): void {
     this.doctorService.readAll().
     subscribe((resp:any)=>{
       this.doctors = resp.content
       console.log(this.doctors);
-
-    })
+    });
   }
 
-  displayedColumns: string[] = ['name', 'birthdate', 'active','specialties','action'];
+  displayedColumns: string[] = ['name', 'birthdate', 'active','action'];
 
 }

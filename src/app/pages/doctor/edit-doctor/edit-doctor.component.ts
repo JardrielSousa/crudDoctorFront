@@ -17,9 +17,11 @@ export interface Specialties{
   styleUrls: ['./edit-doctor.component.css']
 })
 export class EditDoctorComponent implements OnInit {
-  specialtieslist:any;
+  specialtieslist:any = [];
+  specialitiesByDoctorIdList:any;
   id:any;
   isDelete:any;
+
   doctor = {
     id: '',
     name : '',
@@ -27,6 +29,7 @@ export class EditDoctorComponent implements OnInit {
     active : true,
     specialties:[]
   }
+
   constructor( private fb: FormBuilder,
     private router:Router,
     private doctorService:DoctorService,
@@ -44,42 +47,52 @@ export class EditDoctorComponent implements OnInit {
       this.doctorForm.controls['active'].disable();
       this.doctorForm.controls['specialties'].disable();
     }
+
     this.doctorService.readById(id)
     .subscribe((resp:any)=>{
       this.doctor = resp;
       this.id = id;
+      this.doctor.id = this.id
     });
+
     this.specialtiesService.readAll()
     .subscribe((resp:any)=>{
       this.specialtieslist = resp.content
-      console.log(this.specialtieslist);
+      this.specialitiesByDoctorIdList = this.specialtieslist.filter(
+        (list:any)=>list.doctor.id == this.id);
+        console.log(this.specialitiesByDoctorIdList);
 
-    })
+    });
   }
 
 
   doctorForm = this.fb.group({
+    id:[''],
     name: [
       '',
-      [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
+      [Validators.minLength(4), Validators.maxLength(256)],
     ],
-    birthDate: ['', [Validators.required]],
-    active: ['', [Validators.required]],
+    birthDate: [new Date(), ],
+    active: [this.doctor.active, ],
     specialties: [
       '',
     ],
   });
 
   onSubmit(){
-    if(this.doctorForm.invalid)
-      return;
-    this.doctorForm.value.id = this.id
+    this.setFieldsForm();
     this.doctorService.update(this.id,this.doctorForm.value).subscribe((resp:any)=>{
       this.doctorService.verMsg('doctor was changed!!!')
       this.router.navigate(['/doctor']);
     });
-    this.doctorForm.controls['doctor'].setValue(this.doctorForm.value);
-    this.specialtiesService.create(this.doctorForm.value)
+    this.doctorForm.value.specialties.doctor = this.doctor
+    this.specialtiesService.update(this.doctorForm.value.specialties.id , {
+      id : this.doctorForm.value.specialties.id,
+      name:this.doctorForm.value.specialties.name,
+      description:this.doctorForm.value.specialties.description,
+      active:this.doctorForm.value.specialties.active,
+      doctorId:this.doctorForm.value.specialties.doctor.id
+    })
     .subscribe((resp:any)=>{
       console.log(resp);
 
@@ -92,8 +105,22 @@ export class EditDoctorComponent implements OnInit {
       this.router.navigate(['doctor'])
     });
   }
+
   get f() {
     return this.doctorForm.controls
+  }
+
+  private setFieldsForm() {
+    this.doctorForm.controls['id'].setValue(this.id);
+    if (this.doctorForm.value.name == "")
+      this.doctorForm.controls['name'].setValue(this.doctor.name);
+    if (this.doctorForm.value.birthDate == "")
+      this.doctorForm.controls['birthDate'].setValue(this.doctor.birthDate);
+    if (this.doctorForm.value.active == this.doctor.active)
+      this.doctorForm.controls['active'].setValue(this.doctor.active);
+    if(this.doctorForm.value.specialties == this.specialitiesByDoctorIdList)
+      this.doctorForm.controls['specialties'].setValue(this.doctorForm.value.specialties);
+
   }
 
 }

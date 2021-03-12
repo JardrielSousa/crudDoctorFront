@@ -29,6 +29,11 @@ export class SpecialtiesService {
     return this.http.post<any>(this.baseUrl, specialties);
   }
 
+  update(id:any,specialties: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, specialties);
+  }
+
+
   delete(id:any,): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
