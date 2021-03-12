@@ -22,7 +22,6 @@ export class DoctorComponent implements OnInit {
     this.doctorService.readAll().
     subscribe((resp:any)=>{
       this.doctors = resp.content
-      console.log(this.doctors);
     });
   }
 

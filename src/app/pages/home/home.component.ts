@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   doctors:any = [];
   selected = '1';
-  specialties:any
+  specialties:any = [];
   constructor(private router: Router,
     private doctorService:DoctorService,
     private specialtiesService:SpecialtiesService) { }

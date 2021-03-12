@@ -14,7 +14,7 @@ export class EditSpecialtiesComponent implements OnInit {
   doctorList:any;
   id:any;
   active = true;
-  specialties:any;
+  specialties:any = [];
   nothingWasChanged:boolean=false;
   constructor( private fb: FormBuilder,
     private router:Router,
@@ -49,13 +49,13 @@ export class EditSpecialtiesComponent implements OnInit {
     id:[''],
     name: [
       '',
-      [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
+      [Validators.minLength(4), Validators.maxLength(256)],
     ],
     description: [
       '',
-      [Validators.required, Validators.minLength(4), Validators.maxLength(256)],
+      [Validators.minLength(4), Validators.maxLength(256)],
     ],
-    active: ['',],
+    active: [this.specialties.active],
     doctorId: [
       '',
     ],
@@ -63,14 +63,8 @@ export class EditSpecialtiesComponent implements OnInit {
 
   onSubmit(){
     this.specialtiesForm.markAllAsTouched();
-    this.specialtiesForm.controls['id'].setValue(this.id);
-    this.specialtiesForm.controls['name'].setValue(this.specialties.name);
-    this.specialtiesForm.controls['description'].setValue(this.specialties.description);
-    this.specialtiesForm.controls['active'].setValue(this.specialties.active);
-    this.specialtiesForm.controls['doctorId'].setValue(this.specialties?.doctor.id);
+    this.setFildsForm();
 
-    if(this.specialtiesForm.invalid)
-      return;
     this.specialtiesService.update(this.id , this.specialtiesForm.value).subscribe((resp:any)=>{
       this.doctorService.verMsg('specialties was created!!!')
       this.router.navigate(['/specialties']);
@@ -87,5 +81,17 @@ export class EditSpecialtiesComponent implements OnInit {
   get f() {
     return this.specialtiesForm.controls
   }
+
+  private setFildsForm() {
+    this.specialtiesForm.controls['id'].setValue(this.id);
+    if (this.specialtiesForm.value.name == "")
+      this.specialtiesForm.controls['name'].setValue(this.specialties.name);
+    if (this.specialtiesForm.value.description == "")
+      this.specialtiesForm.controls['description'].setValue(this.specialties.description);
+    if (this.specialtiesForm.value.active == this.specialties.active || this.specialtiesForm.value.active == null)
+      this.specialtiesForm.controls['active'].setValue(this.specialties.active);
+    this.specialtiesForm.controls['doctorId'].setValue(this.specialties?.doctor.id);
+  }
+
 
 }

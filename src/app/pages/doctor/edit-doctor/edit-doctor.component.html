@@ -1,6 +1,6 @@
 <div class="container">
   <div>
-    <h1>{{isDelete ? 'Delete Doctor' :' Edit Doctor'}}</h1>
+    <h1>{{isDelete ? 'Delete Doctor':'Edit Doctor'}}</h1>
   </div>
   <form class="form" [formGroup]="doctorForm" (ngSubmit)="isDelete ? ondelete() : onSubmit()">
 
@@ -39,10 +39,10 @@
       Specialties:
       <mat-form-field appearance="fill">
         <div *ngFor="let item of specialitiesByDoctorIdList">
-          {{item.name}}
+          {{doctorForm.value.specialties.name}}
         </div>
-        <mat-select name="specialties" formControlName="specialties"  >
-          <mat-option *ngFor="let s of specialtieslist" [value]="s">{{s.name}}</mat-option>
+        <mat-select name="specialties" formControlName="specialties"  multiple >
+          <mat-option *ngFor="let s of specialtieslist" [value]="s.id">{{s.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
@@ -50,5 +50,6 @@
       </div>
     </label>
     <button  mat-raised-button [color]="isDelete ? 'warn' : 'accent'" type="submit">{{ isDelete ? 'Delete' : 'edit' }} doctor</button>
+    <button *ngIf="isDelete"  mat-stroked-button color="confirm" type="submit" routerLink="/doctor">Cancel</button>
     </form>
     </div>

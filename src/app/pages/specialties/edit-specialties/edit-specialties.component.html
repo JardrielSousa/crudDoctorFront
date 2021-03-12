@@ -6,7 +6,7 @@
 
     <label>
       Name:
-      <input type="text" name="name" formControlName="name" [value]="specialties?.name" required >
+      <input type="text" name="name" formControlName="name" [value]="specialties?.name" >
       <div>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.name.errors && f.name.errors.minlength">Field must have at least 4 characters</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.name.errors && f.name.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
@@ -14,7 +14,7 @@
     </label>
     <label>
       Description:
-      <input type="text" name="description"  formControlName="description" [value]="specialties?.description" required >
+      <input type="text" name="description"  formControlName="description" [value]="specialties?.description"  >
       <div>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.description.errors && f.description.errors.minlength">Field must have at least 4 characters</mat-error>
         <mat-error *ngIf="(specialtiesForm.dirty) && f.description.errors && f.description.errors.maxlength">Field can have a maximum of 256 characters</mat-error>
@@ -35,9 +35,9 @@
     <label>
       Doctor:
       <mat-form-field appearance="fill">
-        <mat-label>{{specialties?.doctor.name}}</mat-label>
-        <mat-select name="doctorId" formControlName="doctorId" [value]="specialties?.doctor.id" >
-          <mat-option *ngFor="let doctor of doctorList" [value]="specialties?.doctor.id">{{doctor.name}}</mat-option>
+        <mat-label>{{specialties?.doctor?.name}}</mat-label>
+        <mat-select name="doctorId" formControlName="doctorId" [value]="specialties?.doctor?.id" >
+          <mat-option *ngFor="let doctor of doctorList" [value]="specialties?.doctor?.id">{{doctor.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
@@ -48,5 +48,6 @@
       </div>
     </label>
     <button  mat-raised-button [color]="isDelete ? 'warn' : 'accent'" type="submit">{{ isDelete ? 'Delete' : 'edit' }} Specialties</button>    </form>
+    <button *ngIf="isDelete"  mat-stroked-button color="confirm" type="submit" routerLink="/specialties">Cancel</button>
     </div>
 
